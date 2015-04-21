@@ -14,3 +14,8 @@ Features:
 * Define common ruleset to apply to all hosts
 * Define server / app specific rulesets to apply to select host groups
 
+Example:
+
+cd ansible-fwbuilder
+
+ansible-playbook -i static.inv projects/example/fwbuilder.yml -e "ENV=DEV HOSTGROUP=ANSIBLEAPI"
