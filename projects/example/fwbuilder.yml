@@ -1,0 +1,11 @@
+---
+
+- hosts: "{{ ENV }}_{{ HOSTGROUP }}"
+  gather_facts: false
+  sudo: yes
+  vars_files:
+    - "{{ HOSTGROUP }}_VARS.yml"
+    - "{{ ENV }}_VARS.yml"
+    - "BASE_VARS.yml"
+  roles:
+    - fwbuilder

@@ -12,5 +12,5 @@ Features:
 * Define a default action for all traffic
 * Enable / disable logging of dropped packets
 * Define common ruleset to apply to all hosts
-* Define server / app specific rulets to apply to select host groups
+* Define server / app specific rulesets to apply to select host groups
 
