@@ -1,0 +1,25 @@
+fw_port:
+  any: { ports: [ all ], proto: [ tcp, udp, icmp ] }
+  ansible_api: { ports: [ 8080, 8081, 8181 ], proto: [ tcp ] }
+  dns: { ports: [ 53 ], proto: [ tcp, udp ] }
+  http: { ports: [ 80 ], proto: [ tcp ] }
+  https: { ports: [ 443 ], proto: [ tcp ] }
+  monitoring_tcp: { ports: [ 22, 80, 443 ], proto: [ tcp ] }
+  monitoring_udp: { ports: [ 161, 25 ], proto: [ udp ] }
+  ping_reply: { proto: icmp, type: "echo-reply" }
+  ping_request: { proto: icmp, type: "echo-request" }
+  proxy_out: { ports: [ 8080, 8443 ], proto: [ tcp ] }
+  ssh: { ports: [ 22 ], proto: [ tcp ] }
+fw_base:
+  default_action: DROP
+  log_dropped: True
+  allow_in:
+    - { nic: "{{ nic.mgmt }}", src: "{{ fw_hosts.ansible }}", port: "{{ fw_port.ssh }}" }
+    - { nic: "{{ nic.mgmt }}", src: "{{ fw_hosts.trusted_hosts }}", port: "{{ fw_port.ssh }}" }
+    - { nic: "{{ nic.mgmt }}", src: "{{ fw_hosts.monitoring }}", port: "{{ fw_port.monitoring_tcp }}" }
+    - { nic: "{{ nic.mgmt }}", src: "{{ fw_hosts.monitoring }}", port: "{{ fw_port.monitoring_udp }}" }
+    - { nic: "{{ nic.mgmt }}", src: "{{ fw_hosts.monitoring }}", port: "{{ fw_port.ping_request }}" }
+  allow_out:
+    - { nic: "{{ nic.mgmt }}", dest: "{{ fw_hosts.nameservers }}", port: "{{ fw_port.dns }}" }
+    - { nic: "{{ nic.mgmt }}", dest: "{{ fw_hosts.proxy_out }}", port: "{{ fw_port.proxy_out }}" }
+    - { nic: "{{ nic.mgmt }}", dest: "{{ fw_hosts.monitoring }}", port: "{{ fw_port.ping_reply }}" }

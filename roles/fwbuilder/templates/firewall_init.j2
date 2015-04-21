@@ -1,0 +1,11 @@
+#!/bin/bash
+
+iptables-restore -t < /etc/default/iptables
+
+if [[ "${?}" == "0" ]];
+then
+  iptables-restore < /etc/default/iptables
+else
+  echo "Firewall rules failed tests"
+  exit 1
+fi
