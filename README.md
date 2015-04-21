@@ -1,6 +1,6 @@
 # ansible-fwbuilder
 
-An Ansible role that translates objects into IPTables firewall rules.
+An Ansible role that translates host, port & rule objects into an IPTables firewall script.
 
 This role will help you to quickly define common firewall rules that you can deploy across all of your environments without duplication.
 
