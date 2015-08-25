@@ -1,0 +1,5 @@
+---
+
+- name: Install IPTables Start Script
+  template: src=firewall_init.j2 dest=/etc/network/if-pre-up.d/iptables owner=root group=root mode=750
+  when: ansible_os_family == "Debian" or ansible_os_family == "RedHat"

@@ -3,140 +3,90 @@
 :FORWARD {{ fw_base.default_action }} [0:0]
 :OUTPUT {{ fw_base.default_action }} [0:0]
 :LOGGING - [0:0]
-
 -A INPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-
-{% if fw_base.allow_in is defined %}
-{% for rule_in in fw_base.allow_in if not rule_in.nic == '' %}
-
-{% for src_host in rule_in.src if not src_host == '' %}
-
-{% if rule_in.port.proto == "icmp" and rule_in.port.type is defined %}
+{% if fw_base.allow_in is defined -%}
+{% for rule_in in fw_base.allow_in if not rule_in.nic == '' -%}
+{% for src_host in rule_in.src if not src_host == '' -%}
+{% if rule_in.port.proto == "icmp" and rule_in.port.type is defined -%}
 -A INPUT -i {{ rule_in.nic }} -s {{ src_host }} -p icmp --icmp-type {{ rule_in.port.type }} -j ACCEPT
-{% else %}
-
-{% for dest_port in rule_in.port.ports %}
-
-{% for proto in rule_in.port.proto %}
-
-
-{% if dest_port == "all" %}
+{% else -%}
+{% for dest_port in rule_in.port.ports -%}
+{% for proto in rule_in.port.proto -%}
+{% if dest_port == "all" -%}
 -A INPUT -i {{ rule_in.nic }} -s {{ src_host }} -p {{ proto }} -m state --state NEW,ESTABLISHED -j ACCEPT
-{% else %}
+{% else -%}
 -A INPUT -i {{ rule_in.nic }} -s {{ src_host }} -p {{ proto }} --dport {{ dest_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
-{% endif %}
-
-{% endfor %}
-
-{% endfor %}
-
-{% endif %}
-
-{% endfor %}
-
-{% endfor %}
-{% endif %}
-
-
-
-{% if fw_extra.allow_in is defined %}
-{% for rule_in in fw_extra.allow_in if not rule_in.nic == '' %}
-
-{% for src_host in rule_in.src %}
-
-{% if rule_in.port.proto == "icmp" and rule_in.port.type is defined %}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
+{% if fw_extra.allow_in is defined -%}
+{% for rule_in in fw_extra.allow_in if not rule_in.nic == '' -%}
+{% for src_host in rule_in.src -%}
+{% if rule_in.port.proto == "icmp" and rule_in.port.type is defined -%}
 -A INPUT -i {{ rule_in.nic }} -s {{ src_host }} -p icmp --icmp-type {{ rule_in.port.type }} -j ACCEPT
-{% else %}
-
-{% for dest_port in rule_in.port.ports %}
-
-{% for proto in rule_in.port.proto %}
-
-{% if dest_port == "all" %}
+{% else -%}
+{% for dest_port in rule_in.port.ports -%}
+{% for proto in rule_in.port.proto -%}
+{% if dest_port == "all" -%}
 -A INPUT -i {{ rule_in.nic }} -s {{ src_host }} -p {{ proto }} -m state --state NEW,ESTABLISHED -j ACCEPT
-{% else %}
+{% else -%}
 -A INPUT -i {{ rule_in.nic }} -s {{ src_host }} -p {{ proto }} --dport {{ dest_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
-{% endif %}
-
-{% endfor %}
-
-{% endfor %}
-{% endif %}
-
-{% endfor %}
-
-{% endfor %}
-{% endif %}
-
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
 -A INPUT -i lo -j ACCEPT
 -A INPUT -j LOGGING
 -A OUTPUT -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT
-
-{% if fw_base.allow_out is defined %}
-{% for rule_out in fw_base.allow_out if not rule_out.nic == '' %}
-
-{% for dest_host in rule_out.dest %}
-
-{% if rule_out.port.proto == "icmp" and rule_out.port.type is defined %}
+{% if fw_base.allow_out is defined -%}
+{% for rule_out in fw_base.allow_out if not rule_out.nic == '' -%}
+{% for dest_host in rule_out.dest -%}
+{% if rule_out.port.proto == "icmp" and rule_out.port.type is defined -%}
 -A OUTPUT -o {{ rule_out.nic }} -d {{ dest_host }} -p icmp --icmp-type {{ rule_out.port.type }} -j ACCEPT
-{% else %}
-
-{% for dest_port in rule_out.port.ports %}
-
-{% for proto in rule_out.port.proto %}
-
-{% if dest_port == "all" %}
+{% else -%}
+{% for dest_port in rule_out.port.ports -%}
+{% for proto in rule_out.port.proto -%}
+{% if dest_port == "all" -%}
 -A OUTPUT -o {{ rule_out.nic }} -d {{ dest_host }} -p {{ proto }} -m state --state NEW,ESTABLISHED -j ACCEPT
-{% else %}
+{% else -%}
 -A OUTPUT -o {{ rule_out.nic }} -d {{ dest_host }} -p {{ proto }} --dport {{ dest_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
-{% endif %}
-
-{% endfor %}
-
-{% endfor %}
-{% endif %}
-
-{% endfor %}
-
-{% endfor %}
-{% endif %}
-
-
-
-{% if fw_extra.allow_out is defined %}
-{% for rule_out in fw_extra.allow_out if not rule_out.nic == '' %}
-
-{% for dest_host in rule_out.dest %}
-
-{% if rule_out.port.proto == "icmp" and rule_out.port.type is defined %}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
+{% if fw_extra.allow_out is defined -%}
+{% for rule_out in fw_extra.allow_out if not rule_out.nic == '' -%}
+{% for dest_host in rule_out.dest -%}
+{% if rule_out.port.proto == "icmp" and rule_out.port.type is defined -%}
 -A OUTPUT -o {{ rule_out.nic }} -d {{ dest_host }} -p icmp --icmp-type {{ rule_out.port.type }} -j ACCEPT
-{% else %}
-
-{% for dest_port in rule_out.port.ports %}
-
-{% for proto in rule_out.port.proto %}
-
-{% if dest_port == "all" %}
+{% else -%}
+{% for dest_port in rule_out.port.ports -%}
+{% for proto in rule_out.port.proto -%}
+{% if dest_port == "all" -%}
 -A OUTPUT -o {{ rule_out.nic }} -d {{ dest_host }} -p {{ proto }} -m state --state NEW,ESTABLISHED -j ACCEPT
-{% else %} 
+{% else -%} 
 -A OUTPUT -o {{ rule_out.nic }} -d {{ dest_host }} -p {{ proto }} --dport {{ dest_port }} -m state --state NEW,ESTABLISHED -j ACCEPT
-{% endif %}
-
-{% endfor %}
-
-{% endfor %}
-{% endif %}
-
-{% endfor %}
-
-{% endfor %}
-{% endif %}
-
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+{% endif -%}
 -A OUTPUT -o lo -j ACCEPT
 -A OUTPUT -j LOGGING
-
-{% if fw_base.log_dropped is defined %}
+{% if fw_base.log_dropped is defined -%}
 -A LOGGING -m limit --limit 1/sec -j LOG --log-prefix "IPTables Dropped: "
-{% endif %}
+{% endif -%}
 -A LOGGING -j DROP
 COMMIT

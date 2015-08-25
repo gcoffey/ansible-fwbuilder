@@ -1,8 +1,0 @@
-nic:
-  mgmt: eth0
-
-fw_extra:
-  allow_in:
-    - { nic: "{{ nic.mgmt }}", src: "{{ fw_hosts.loadbalancer }}", port: "{{ fw_port.ansible_api }}" }
-  allow_out:
-    - { nic: "{{ nic.mgmt }}", dest: "{{ fw_hosts.amazon_ec2 }}", port: "{{ fw_port.https }}" }

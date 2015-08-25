@@ -18,4 +18,10 @@ Example:
 
 cd ansible-fwbuilder
 
-ansible-playbook -i static.inv projects/example/fwbuilder.yml -e "ENV=DEV HOSTGROUP=ANSIBLEAPI"
+- Run all tasks and install firewall scripts (Redhat & Debian)
+ansible-playbook -i static.inv projects/example/fwbuilder.yml
+
+- Generate an IPTables script and output to /tmp/iptables
+ansible-playbook -i static.inv projects/example/fwbuilder.yml --limit=local --tags=create-rules
+
+A file containing the IPTable rule output can be found in /tmp/iptables or /etc/default/iptables

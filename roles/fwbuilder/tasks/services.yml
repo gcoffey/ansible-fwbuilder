@@ -1,0 +1,6 @@
+---
+
+- name: Reload Firewall Rules
+  command: /etc/network/if-pre-up.d/iptables
+  when: fw_update.changed
+  when: ansible_os_family == "Debian or ansible_os_family == "RedHat"

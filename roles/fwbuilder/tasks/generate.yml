@@ -1,0 +1,5 @@
+---
+
+- name: Generate Firewall Rules
+  template: src=firewall.rules.j2 dest=/tmp/iptables
+  register: fw_update

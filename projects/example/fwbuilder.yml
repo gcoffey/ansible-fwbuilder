@@ -1,11 +1,9 @@
 ---
 
-- hosts: "{{ ENV }}_{{ HOSTGROUP }}"
+- hosts: all 
   gather_facts: false
   sudo: yes
   vars_files:
-    - "{{ HOSTGROUP }}_VARS.yml"
-    - "{{ ENV }}_VARS.yml"
-    - "BASE_VARS.yml"
+    - FIREWALL_VARS.yml
   roles:
     - fwbuilder

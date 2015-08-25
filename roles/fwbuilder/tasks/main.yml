@@ -1,20 +1,17 @@
 ---
 
-- name: Generate Firewall Rules
-  template: src=firewall.rules.j2 dest=/tmp/iptables
-  register: fw_update
+- include: generate.yml
+  tags:
+    - generate-firewall-rules
+    - create-rules
 
-- name: Remove blank lines from firewall rules
-  lineinfile: dest=/etc/default/iptables regexp="^$" state=absent
-  when: fw_update.changed
+- include: scripts.yml
+  tags:
+    - generate-firewall-rules
+    - firewall-scripts 
 
-- name: Remove spaces from firewall rules
-  lineinfile: dest=/etc/default/iptables regexp="^\s" state=absent
-  when: fw_update.changed
-
-- name: Install IPTables Start Script
-  template: src=firewall_init.j2 dest=/etc/network/if-pre-up.d/iptables owner=root group=root mode=750
-
-- name: Reload Firewall Rules
-  command: /etc/network/if-pre-up.d/iptables
-  when: fw_update.changed
+- include: services.yml
+  tags:
+    - generate-firewall-rules
+    - firewall-service
+ 
